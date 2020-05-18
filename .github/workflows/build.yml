@@ -4,10 +4,11 @@ on: [push, pull_request]
 
 jobs:
   linux-gcc:
-    runs-on: ubuntu-18.04
     strategy:
       matrix:
+        os: [ubuntu-lastest, ubuntu-18.04, ubuntu-16.04]
         gcc-version: [8, 9]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
         with:
