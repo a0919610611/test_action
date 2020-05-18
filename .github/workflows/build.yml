@@ -5,6 +5,9 @@ on: [push, pull_request]
 jobs:
   linux-gcc:
     runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        gcc-version: [8, 9]
     steps:
       - uses: actions/checkout@v1
         with:
@@ -15,8 +18,8 @@ jobs:
           sudo add-apt-repository ppa:ubuntu-toolchain-r/test && \
           sudo apt update
       - name: install gcc and gcc-plugin
-        run: sudo apt install -y gcc-9 gcc-9-plugin-dev
+        run: sudo apt install -y gcc-${{ matrix.gcc-version }} gcc-${{ matrix.gcc-version }}-plugin-dev
       - name: build
-        run: gcc-9 --version
+        run: gcc-${{ matrix.gcc-version }} --version
       - name: check-plugin
-        run: gcc-9 -print-file-name=plugin
+        run: gcc-${{ matrix.gcc-version }} -print-file-name=plugin
