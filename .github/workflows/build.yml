@@ -3,9 +3,15 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  linux-gcc:
-    runs-on: ubuntu-latest
+  linux-gcc8:
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: install gcc-plugin
+        run: sudo apt install -y gcc-8-plugin-dev
       - name: build
         run: gcc-8 --version
+      - name: check-plugin
+        run: gcc-8 -print-file-name=plugin
