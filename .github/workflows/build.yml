@@ -3,15 +3,20 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  linux-gcc8:
+  linux-gcc:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 1
-      - name: install gcc-plugin
-        run: sudo apt install -y gcc-8-plugin-dev
+      - name: newest gcc repo
+        run: |
+          sudo apt install -y software-properties-common && \
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test && \
+          sudo apt update
+      - name: install gcc and gcc-plugin
+        run: sudo apt install -y gcc-9 gcc-9-plugin-dev
       - name: build
-        run: gcc-8 --version
+        run: gcc-9 --version
       - name: check-plugin
-        run: gcc-8 -print-file-name=plugin
+        run: gcc-9 -print-file-name=plugin
